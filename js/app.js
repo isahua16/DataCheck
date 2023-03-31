@@ -1,3 +1,16 @@
+function select_item(event)
+{
+    let product = {
+        name: `${event[`target`].getAttribute(`product_name`)}`,
+        price: `${event[`target`].getAttribute(`product_price`)}`,
+        image_url: `${event[`target`].getAttribute(`product_image_url`)}`,
+        description: `${event[`target`].getAttribute(`product_description`)}`
+    }
+
+    let product_string = JSON.stringify(product);
+    Cookies.set(`product_selected`, product_string);
+}
+
 let products = [
     {
         name: `Product One`,
@@ -25,10 +38,21 @@ for(let i = 0; i < products.length; i++)
 {
     body.insertAdjacentHTML(`beforeend`,  
     `<article>
-          <img width="200px" src="${products[i][`image_url`]}" alt="${products[i][`name`]}"></img>
+        <img width="200px" src="${products[i][`image_url`]}" alt="${products[i][`name`]}"></img>
         <h1>${products[i][`name`]}</h1>
-        <p>${products[i][`price`]}</p>
+        <p>$ ${products[i][`price`]}</p>
         <p>${products[i][`description`]}</p>
-        <button product_name="${products[i][`name`]}" product_price="${products[i][`price`]}" product_image_url="${products[i][`image_url`]}" product_description="${products[i][`description`]}">ADD TO CART</button>
-    </article>`)
+        <button class="add_to_cart_button" 
+            product_name="${products[i][`name`]}" 
+            product_price="${products[i][`price`]}" product_image_url="${products[i][`image_url`]}" product_description="${products[i][`description`]}">
+            ADD TO CART
+        </button>
+    </article>`
+    );
+}
+
+let add_to_cart_buttons = document.querySelectorAll(`.add_to_cart_button`);
+for(let i = 0; i < add_to_cart_buttons.length; i++)
+{
+    add_to_cart_buttons[i].addEventListener(`click`, select_item);
 }
